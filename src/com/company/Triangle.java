@@ -60,7 +60,7 @@ public class Triangle {
 
         this.third_s = getSideByAngelsAndSide(first_s, ang_fst_snd, ang_trd_fst);
         this.second_s = getSideBySidesAndAngel(this.first_s, this.third_s, this.ang_trd_fst);
-        this.ang_snd_trd = 180 - (this.ang_fst_snd + this.ang_snd_trd);
+        this.ang_snd_trd = 180 - (this.ang_fst_snd + this.ang_trd_fst);
 
     }
 
