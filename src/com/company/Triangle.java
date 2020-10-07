@@ -4,163 +4,152 @@ package com.company;
 Triangle (home task - Java).Triangle 
 * @Author: Den1k
 * @DateTime: 01.10.2020|19:00 
-* @Version Triangle: 1.0
+* @Version Triangle: 1.1
 */
 
 import java.util.Objects;
 
 public class Triangle {
 
-    private double first_s; // First side;
-    private double second_s; // Second side;
-    private double third_s; // Third side;
+    private float side_a;
+    private float side_b;
+    private float side_c;
 
-    private float ang_fst_snd; // The angel between first and second sides;
-    private float ang_snd_trd; // The angel between second and third sides;
-    private float ang_trd_fst; // The angel between third and first sides;
+    Triangle(float side_a, float side_b, float side_c){
 
-    Triangle(double first_s, double second_s, double third_s) {
+        if(!isValid(side_a, side_b, side_c))
+            throw new IllegalArgumentException("Triangle isn't valid!");
 
-        if(first_s < 0 || second_s < 0 || third_s < 0)
-            throw new IllegalArgumentException("Invalid argument entered");
-
-        this.first_s = first_s;
-        this.second_s = second_s;
-        this.third_s = third_s;
-
-        this.ang_fst_snd = getAngelBySides(first_s, second_s, third_s);
-        this.ang_snd_trd = getAngelBySides(second_s, third_s, first_s);
-        this.ang_trd_fst = 180 - (this.ang_fst_snd + this.ang_snd_trd);
+        this.side_a = side_a;
+        this.side_b = side_b;
+        this.side_c = side_c;
 
     }
 
-    Triangle(double first_s, double second_s, float ang_fst_snd) {
+    Triangle(float side_a, float side_b, double angel_a_b){
 
-        if(first_s < 0 || second_s < 0 || ang_fst_snd < 0 || ang_fst_snd > 179)
-            throw new IllegalArgumentException("Invalid argument entered");
+        float side_c = getSideBySidesAndAngel(side_a, side_b, angel_a_b);
 
-        this.first_s = first_s;
-        this.second_s = second_s;
-        this.third_s = getSideBySidesAndAngel(first_s, second_s, ang_fst_snd);
+        if(!isValid(side_a, side_b, side_c))
+            throw new IllegalArgumentException("Triangle isn't valid!");
 
-        this.ang_fst_snd = ang_fst_snd;
-        this.ang_snd_trd = getAngelBySides(this.second_s, this.third_s, this.first_s);
-        this.ang_trd_fst = 180 - (this.ang_fst_snd + this.ang_snd_trd);
+        this.side_a = side_a;
+        this.side_b = side_b;
+        this.side_c = side_c;
 
     }
 
-    Triangle(double first_s, float ang_fst_snd, float ang_trd_fst) {
+    Triangle(float side_a, double angel_a_b, double angel_c_a){
 
-        if(first_s < 0 || (ang_fst_snd + ang_trd_fst) >= 180 || ang_fst_snd < 0 || ang_trd_fst < 0)
-            throw new IllegalArgumentException("Invalid argument entered");
+        float side_c = getSideByAngelsAndSide(side_a, angel_a_b, angel_c_a);
+        float side_b = getSideBySidesAndAngel(side_a, side_c, angel_a_b);
 
-        this.first_s = first_s;
-        this.ang_fst_snd = ang_fst_snd;
-        this.ang_trd_fst = ang_trd_fst;
+        if(!isValid(side_a, side_b, side_c))
+            throw new IllegalArgumentException("Triangle isn't valid!");
 
-        this.third_s = getSideByAngelsAndSide(first_s, ang_fst_snd, ang_trd_fst);
-        this.second_s = getSideBySidesAndAngel(this.first_s, this.third_s, this.ang_trd_fst);
-        this.ang_snd_trd = 180 - (this.ang_fst_snd + this.ang_trd_fst);
+        this.side_a = side_a;
+        this.side_b = side_b;
+        this.side_c = side_c;
 
     }
 
-    public double getFirstSide() {
-        return first_s;
+    public float getSideA() {
+        return side_a;
     }
 
-    public double getSecondSide() {
-        return second_s;
+    public void setSideA(float side_a) {
+        if(!isValid(side_a, this.side_b, this.side_c))
+            throw new IllegalArgumentException("Triangle isn't valid!");
+
+        this.side_a = side_a;
     }
 
-    public double getThirdSide() {
-        return third_s;
+    public float getSideB() {
+        return side_b;
     }
 
-    public float getAngFstSnd() {
-        return ang_fst_snd;
+    public void setSideB(float side_b) {
+        if(!isValid(this.side_a, side_b, this.side_c))
+            throw new IllegalArgumentException("Triangle isn't valid!");
+
+        this.side_b = side_b;
     }
 
-    public float getAngSndTrd() {
-        return ang_snd_trd;
+    public float getSideC() {
+        return side_c;
     }
 
-    public float getAngTrdFst() {
-        return ang_trd_fst;
+    public void setSideC(float side_c) {
+        if(!isValid(this.side_a, this.side_b, side_c))
+            throw new IllegalArgumentException("Triangle isn't valid!");
+
+        this.side_c = side_c;
     }
 
-    public void setFirstSide(double first_s) {
-        this.first_s = first_s;
+    public double getAngelAB(){
+        return getAngelBySides(this.side_a, this.side_b, this.side_c);
     }
 
-    public void setSecondSide(double second_s) {
-        this.second_s = second_s;
+    public double getAngelBC(){
+        return getAngelBySides(this.side_b, this.side_c, this.side_a);
     }
 
-    public void setThirdSide(double third_s) {
-        this.third_s = third_s;
-    }
-
-    public void setAngFstSnd(float ang_fst_snd) {
-        this.ang_fst_snd = ang_fst_snd;
-    }
-
-    public void setAngSndTrd(float ang_snd_trd) {
-        this.ang_snd_trd = ang_snd_trd;
-    }
-
-    public void setAngTrdFst(float ang_trd_fst) {
-        this.ang_trd_fst = ang_trd_fst;
+    public double getAngelAC(){
+        return getAngelBySides(this.side_a, this.side_c, this.side_b);
     }
 
     public double getPerimeter(){
-        return this.first_s + this.second_s + this.third_s;
+        return this.side_a + this.side_b + this.side_c;
     }
 
     public double getArea(){
-        return this.getHeightToFirstSide() * this.first_s * 0.5;
+        return this.getHeightToFirstSide() * this.side_a * 0.5;
     }
 
     public double getHeightToFirstSide(){
-        return this.third_s * Math.sin( Math.toRadians(this.ang_trd_fst) );
+        return this.side_c * Math.sin(this.getAngelAC());
     }
 
     public double getHeightToSecondSide(){
-        return this.first_s * Math.sin( Math.toRadians(this.ang_fst_snd) );
+        return this.side_a * Math.sin(this.getAngelAB());
     }
 
     public double getHeightToThirdSide(){
-        return this.second_s * Math.sin( Math.toRadians(this.ang_snd_trd) );
+        return this.side_c * Math.sin(this.getAngelBC());
     }
 
     public double getRadiusCircumscribedCircle(){
-        return this.first_s * this.second_s * this.third_s / (4 * this.getArea());
+        return this.side_a * this.side_b * this.side_c / (4 * this.getArea());
     }
 
     public double getInscribedCircle(){
         return 2 * this.getArea() / this.getPerimeter();
     }
 
-    private double getSideByAngelsAndSide(double side, float fst_angel, float snd_angel){
-        return side * Math.sin( Math.toRadians(snd_angel)) / Math.sin( Math.toRadians(fst_angel + snd_angel) );
+    static float getSideBySidesAndAngel(float side_a, float side_b, double angel){
+        return (float) Math.sqrt( Math.pow(side_a, 2) + Math.pow(side_b, 2) - 2 * side_a * side_b * Math.cos(angel) );
     }
 
-    private double getSideBySidesAndAngel(double first_s, double second_s, float angel){
-        return Math.sqrt( Math.pow(first_s, 2) + Math.pow(second_s, 2) - 2 * first_s * second_s * Math.cos(Math.toRadians(angel)) );
+    static private float getSideByAngelsAndSide(float side, double fst_angel, double snd_angel){
+        return side * (float)Math.sin(snd_angel) / (float)Math.sin(fst_angel + snd_angel);
     }
 
-    private float getAngelBySides(double first_s_btw, double second_s_btw, double third_s_front){
-        return (float) Math.toDegrees( Math.acos( (Math.pow(first_s_btw, 2) + Math.pow(second_s_btw, 2) - Math.pow(third_s_front, 2)) / (2 * first_s_btw * second_s_btw) ) );
+    static private double getAngelBySides(float side_a_btw, float side_b_btw, float side_c_front){
+        return Math.acos( (Math.pow(side_a_btw, 2) + Math.pow(side_b_btw, 2) - Math.pow(side_c_front, 2)) / (2 * side_a_btw * side_b_btw) );
+    }
+
+    static private boolean isValid(float side_a, float side_b, float side_c){
+        return  (side_a + side_b < side_c) ||
+                (side_b + side_c < side_a) ||
+                (side_a + side_c < side_b) ? false : true;
     }
 
     @Override
     public String toString() {
         return "Triangle{" +
-                "first_s=" + first_s +
-                ", second_s=" + second_s +
-                ", third_s=" + third_s +
-                ", ang_fst_snd=" + ang_fst_snd +
-                ", ang_snd_trd=" + ang_snd_trd +
-                ", ang_trd_fst=" + ang_trd_fst +
+                "side_a=" + side_a +
+                ", side_b=" + side_b +
+                ", side_c=" + side_c +
                 '}';
     }
 
@@ -169,13 +158,13 @@ public class Triangle {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Triangle triangle = (Triangle) o;
-        return Double.compare(triangle.first_s, first_s) == 0 &&
-                Double.compare(triangle.second_s, second_s) == 0 &&
-                Double.compare(triangle.third_s, third_s) == 0;
+        return Float.compare(triangle.side_a, side_a) == 0 &&
+                Float.compare(triangle.side_b, side_b) == 0 &&
+                Float.compare(triangle.side_c, side_c) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(first_s, second_s, third_s);
+        return Objects.hash(side_a, side_b, side_c);
     }
 }
